@@ -49,7 +49,7 @@
       routes:
         - dest: 0.0.0.0/0
           gateway_id: "{{ result_igw.gateway_id }}"
-    register: result_routetable
+    register: result_routetable  
     
   - name: Set up public subnet route table
     ec2_vpc_route_table:
@@ -67,16 +67,17 @@
   - name: create security group
     ec2_group:
       name: public SG
-      description: sg with rule descriptio
+      description: sg with rule descriptions
       vpc_id: "{{ result_vpc.vpc.id }}"
       region: "{{ aws_region }}"
       rules:
         - proto: tcp
           ports:
           - 80
-          - 22
+          - 22               
           cidr_ip: 0.0.0.0/0
           rule_desc: allow all on port 80
+          
   - name: create EC2
     ec2:
       key_name: "{{ ec2_key_name }}"
